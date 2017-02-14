@@ -1,0 +1,11 @@
+<div class="sidebar-module">
+  <h6>
+    <i class="fa fa-newspaper-o"></i>
+    Random Articles
+  </h6>
+  <ol class="list-unstyled">
+    <% @articleRand.each do |data| %>
+        <li><%= link_to "<em>#{data.title}</em>".html_safe, article_path(data)%></li>
+    <% end %>
+  </ol>
+</div>

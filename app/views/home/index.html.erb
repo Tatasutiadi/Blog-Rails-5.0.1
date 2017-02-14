@@ -1,0 +1,67 @@
+<div class="row">
+  <div class="col-md-8">
+    <div class="category_list clearfix">
+      <h5><%= @categoryCount %> Category</h5>
+      <ul class="category_list clearfix">
+        <% @category.each do |data| %>
+              <li class="list-group">
+                <%= link_to "<img src='/folder.png' width='25px'>  #{data.name}".html_safe, categorie_path(data),'class'=>'nav-link' %>
+              </li>
+        <% end %>
+      </ul>
+    </div>
+    <br />
+    <div class="no-border mt20">
+      <div class="page-header">
+        <h5>
+          <i class="fa fa-file-o"></i>
+          Recent Script
+        </h5>
+      </div>
+    </div>
+    <% @article.each do |data| %>
+      <div class="blog-post">
+        <h7 class="blog-post-title"><b><%= link_to " #{data.title}".html_safe, article_path(data)%></b></h7>
+        <p class="blog-post-meta"><i class="fa fa-clock-o"></i> <%= data.create_at.strftime('%m/%d/%Y') %> by <%= link_to " #{data.account.name}".html_safe, '#'%>  <i class="fa fa-eye"></i> <%= data.view %> view
+          <i class="fa fa-tag"></i>
+          <% CategoryArticle.where(:article_id =>data.id).each do |dataCategory|%>
+              <%= link_to " #{dataCategory.categorie.name}".html_safe, categorie_path(dataCategory) %>
+          <% end %>
+        </p>
+        <p>
+          <%=
+            truncate(data.body, :length => 300,  :separator => ' ') do
+              link_to "see more".html_safe, article_path(data)
+            end
+          %>
+        </p>
+      </div>
+    <% end %>
+    <nav aria-label="Page navigation example">
+      <div class="apple_pagination">
+        <div class="page_info">
+          <%= page_entries_info @article %>
+        </div>
+        <%= will_paginate @article, :container => false %>
+      </div>
+    </nav>
+  </div>
+  <div class="col-md-4">
+    <div class="no-border mt20">
+      <div class="page-header">
+        <h2>
+          <i class="fa fa-file-o"></i>
+          Top 7 Articles
+        </h2>
+      </div>
+    </div>
+    <div class="list-group">
+      <% view = 0;
+        arrayColor = ['success','info','warning','danger','default'];
+        @topArticle.each do |data|
+          arrayColor.shuffle %>
+          <%= link_to " #{data.title} <span class='badge badge-#{arrayColor.shuffle.first} badge-pill'> #{view = view + 1} </span>".html_safe, article_path(data),:class=>"list-group-item list-group-item-action list-group-item-#{arrayColor.shuffle.first} justify-content-between"%>
+      <% end %>
+    </div>
+  </div>
+</div>

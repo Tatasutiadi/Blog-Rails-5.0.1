@@ -1,0 +1,74 @@
+<script src='https://www.google.com/recaptcha/api.js'></script>
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href="#">Home</a></li>
+  <li class="breadcrumb-item active">Registration</li>
+</ol>
+<div class="no-border">
+  <div class="page-header"><h1>Registration</h1></div>
+</div>
+<div class="row mt20">
+  <div class="col-md-6">
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+
+        <%= alert! %>
+
+        <div class="form-group">
+          <%= f.label :name,class:'col-sm-2 col-form-label'%><br />
+          <div class="col-sm-8">
+            <%= f.text_field :name,:class=>'form-control',placeholder: "" %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :email,class:'col-sm-2 col-form-label'%><br />
+          <div class="col-sm-8">
+            <%= f.email_field :email, autofocus: true,:class=>'form-control',placeholder: "" %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :password,class:'col-sm-6 col-form-label'%><br />
+          <div class="col-sm-8">
+            <%= f.password_field :password, autocomplete: 'off',:class=>'form-control',placeholder: "" %>
+            <% if @minimum_password_length %>
+                <em>(<%= @minimum_password_length %> characters minimum)</em>
+            <% end %><br />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :password_confirmation,class:'col-sm-6 col-form-label'%><br />
+          <div class="col-sm-8">
+            <%= f.password_field :password_confirmation, autocomplete: 'off',:class=>'form-control',placeholder: "" %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-6 col-form-label">Verification Code</label><br />
+          <div class="col-sm-8">
+            <%= flash[:recaptcha_error] %>
+            <%= recaptcha_tags %>
+            <div class="g-recaptcha" data-sitekey="6LdEfBQUAAAAAGP0QfhKGJWxkk_528E6e2Tqa65W"></div>
+          </div>
+        </div>
+
+        <div class="form-group form-actions">
+          <div class="col-sm-8">
+            <%= f.submit "Sign up" ,class:"btn btn-primary"%>
+          </div>
+        </div>
+
+
+
+    <% end %>
+  </div>
+
+  <div class="col-md-1">
+    <div style="border-left:0.3px solid rgba(0,0,0,0.49);height:500px"></div>
+  </div>
+  <div class="col-md-5">
+    <%= link_to "<i class='fa fa-facebook-official'></i> Registration using Facebook".html_safe, account_facebook_omniauth_authorize_path ,class:'btn btn-outline-primary btn-block'%>
+    <%= link_to "<i class='fa fa-google'></i> Registration using Google".html_safe, account_google_oauth2_omniauth_authorize_path ,class:'btn btn-outline-danger btn-block'%>
+    <%= link_to "<i class='fa fa-twitter-square'></i> Registration using Twitter Account".html_safe, account_twitter_omniauth_authorize_path ,class:'btn btn-outline-info btn-block'%>
+  </div>
+</div>

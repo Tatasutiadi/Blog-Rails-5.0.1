@@ -1,0 +1,14 @@
+<div class="no-border mt20">
+  <div class="page-header">
+    <h5>
+      <i class="fa fa-file-o"></i>
+      Category
+    </h5>
+  </div>
+</div>
+
+<div class="list-group">
+  <% @category.each do |data|%>
+      <%= link_to "#{data.name} <span class='badge badge-default badge-pill'>#{data.count_data}</span> ".html_safe,categorie_path(data),:class=>"list-group-item list-group-item-action justify-content-between" %>
+  <% end %>
+</div>

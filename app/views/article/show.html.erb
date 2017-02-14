@@ -1,0 +1,155 @@
+<script id="dsq-count-scr" src="//my-blog-ror.disqus.com/count.js" async></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-rating/1.4.0/bootstrap-rating.css">
+<!-- Custom Style -->
+<!--<link href="/css/ayoshare.css" rel="stylesheet">-->
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href="#">Home</a></li>
+  <li class="breadcrumb-item active"><%= link_to "Article".html_safe, article_index_path%></li>
+  <li class="breadcrumb-item active"><%= @article.title%></li>
+</ol>
+<div class="row mt20">
+  <div class="col-md-9">
+
+    <div class="header">
+      <div class="title">
+        <h2><%= @article.title%></h2>
+      </div>
+      <div class="row">
+        <div class="col-md-1">
+          <% if @article.account.image.present? %>
+              <%= image_tag(@article.account.image,:size => "50x50") %>
+          <%else%>
+              <%= image_tag("/avatar.png",:size => "50x50", :alt=> "photo") %>
+          <%end%>
+        </div>
+        <div class="col-md-6">
+          <div class="pull-left">
+            <%= link_to " #{@article.account.name}".html_safe, '#'%> -
+            <%= @article.create_at.strftime('%m/%d/%Y') %> <br />
+            <div class="mt5">
+              <input type="hidden" class="rating-tooltip-manual" data-filled="fa fa-star fa-1x" data-empty="fa fa-star-o fa-1x" data-fractions="2"/>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-5">
+          <!--<div class="anu" data-ayoshare="http://ibacor.com/labs/jquery-awesome-sosmed-share-button"></div>-->
+          <!--<div class="anu" data-ayoshare="http://ibacor.com/demo/jquery-awesome-sosmed-share-button/"></div>-->
+          <%#= social_share_button_tag(@article.title) %>
+        </div>
+      </div>
+    </div>
+    <!--<input type="hidden" class="rating-tooltip" data-filled="symbol symbol-filled" data-empty="symbol symbol-empty"/>-->
+
+    <hr />
+    <%= @article.body%>
+    <br /><br />
+    <div id="disqus_thread"></div>
+
+  </div>
+  <div class="col-md-3">
+    <div class="sidebar-module sidebar-module-inset">
+      <h6><i class="fa fa-info-circle"></i> Article Info</h6>
+      <table class="table-rensponsive">
+        <tbody>
+          <tr>
+            <td>view</td>
+            <td width="30%"></td>
+            <td><%= @article.view%></td>
+          </tr>
+          <tr>
+            <td>category</td>
+            <td></td>
+            <td>
+              <% CategoryArticle.where(:article_id =>@article.id).each do |dataCategory|%>
+                  <%= link_to " #{dataCategory.categorie.name}".html_safe, categorie_path(dataCategory) %>
+              <% end %>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br />
+    <div class="sidebar-module sidebar-module-inset">
+      <h6><i class="fa fa-tags"></i> Tag As</h6>
+      <% @tag.each do |tag| %>
+          <span class="badge badge-pill badge-info"><i class="fa fa-hashtag"></i><%= tag%></span>
+      <% end%>
+    </div>
+    <br />
+    <%= render 'layouts/rightLayoutRandomArc'%>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-rating/1.4.0/bootstrap-rating.js"></script>
+<script src="/js/tooltip.js"></script>
+<!-- jQuery Awesome Sosmed Share Button -->
+<!--<script src="/js/ayoshare.js"></script>-->
+<script>
+//    $(function() {
+//        $(".anu").ayoshare({
+//            google : true,
+//            facebook : true,
+//            pinterest : true,
+//            linkedin : true,
+//            twitter : true,
+//            email : true,
+//            whatsapp : true,
+//            telegram : true,
+//            line : true,
+//            bbm : true,
+//            viber : true,
+//            sms: true
+//        });
+//    });
+
+    /*$('input.rating-tooltip').rating({
+        extendSymbol: function (rate) {
+            $(this).tooltip({
+                container: 'body',
+                placement: 'bottom',
+                title: 'Rate ' + rate
+            });
+        }
+    });*/
+    $('.rating-tooltip-manual').rating({
+        extendSymbol: function () {
+            var title;
+            $(this).tooltip({
+                container: 'body',
+                placement: 'bottom',
+                trigger: 'manual',
+                title: function () {
+                    return title;
+                }
+            });
+            $(this).on('rating.rateenter', function (e, rate) {
+                title = rate;
+                $(this).tooltip('show');
+            })
+            .on('rating.rateleave', function () {
+                $(this).tooltip('hide');
+            });
+        }
+    });
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+     var disqus_config = function () {
+     this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+     this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+     };
+     */
+//    var disqus_developer = 1;
+    var disqus_config = function () {
+        this.page.url = '<%= "http:://localhost:3000#{url_for([@article,{only_path: false}])}" %>';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = '<%= @article.id %>'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+
+    (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = '//my-blog-ror.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>

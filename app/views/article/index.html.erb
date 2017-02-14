@@ -1,0 +1,38 @@
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href="#">Home</a></li>
+  <li class="breadcrumb-item active">Article</li>
+</ol>
+<div class="row mt20">
+  <div class="col-md-3">
+    <%= render 'layouts/leftLayout', :category => @category%>
+  </div>
+  <div class="col-md-9">
+    <div class="no-border mt20">
+      <div class="page-header">
+        <h5>
+          Last Article
+        </h5>
+      </div>
+    </div>
+    <hr />
+    <% @article.each do |data| %>
+        <div class="blog-post">
+          <h7 class="blog-post-title"><b><%= link_to " #{data.title}".html_safe, article_path(data)%></b></h7>
+          <p class="blog-post-meta"><i class="fa fa-clock-o"></i> <%= data.create_at.strftime('%m/%d/%Y') %> by <%= link_to " #{data.account.name}".html_safe, '#'%>  <i class="fa fa-eye"></i> <%= data.view %> view
+            <i class="fa fa-tag"></i>
+            <% CategoryArticle.where(:article_id =>data.id).each do |dataCategory|%>
+                <%= link_to " #{dataCategory.categorie.name}".html_safe, categorie_path(dataCategory) %>
+            <% end %>
+          </p>
+          <p>
+            <%=
+              truncate(data.body, :length => 150,  :separator => ' ') do
+                link_to "see more".html_safe, article_path(data)
+              end
+            %>
+          </p>
+        </div>
+    <% end %>
+    <%= will_paginate @article, :container => false %>
+  </div>
+</div>
