@@ -1,24 +1,18 @@
-# README
+# Blog Rails
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Blog Rails is Application simple using Ruby(2.3) on Rails(5.0.1).
 
-Things you may want to cover:
+This Rails 5 (5.0.0.1) app integrated:
 
-* Ruby version
+* Devise - for authentication.
 
-* System dependencies
+* omniauth (Facebook,google,twitter)
 
-* Configuration
+* will_paginate-bootstrap4
 
-* Database creation
+* recaptcha - For validation registration page
 
-* Database initialization
+* Bootstratp 4 - for look and feel of application with glyphicons.
 
-* How to run the test suite
+* Discuq - For comment content blog
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
